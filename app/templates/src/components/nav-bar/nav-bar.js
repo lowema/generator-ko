@@ -1,13 +1,21 @@
-define(['knockout', 'text!./nav-bar.html'], function(ko, template) {
+define(["knockout", "text!./nav-bar.html", "jquery"], function(ko, template, $) {
 
-  function NavBarViewModel(params) {
+	function NavBarViewModel(params) {
+		var self = this;
 
-    // This viewmodel doesn't do anything except pass through the 'route' parameter to the view.
-    // You could remove this viewmodel entirely, and define 'nav-bar' as a template-only component.
-    // But in most apps, you'll want some viewmodel logic to determine what navigation options appear.
+		// route, used to make the CSS active for the selected item
+		self.route = params.route;
 
-    this.route = params.route;
-  }
+		// some example fields to use in the nav bar
+		self.userName = ko.observable('Some User');
+		self.hasAdminPrivs = ko.observable(true);
 
-  return { viewModel: NavBarViewModel, template: template };
+		// make the dropdown work for now :)
+		$('.ui.menu .ui.dropdown').dropdown({
+			on: 'hover'
+		});
+
+	}
+
+	return { viewModel: NavBarViewModel, template: template };
 });

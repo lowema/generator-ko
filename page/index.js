@@ -4,12 +4,12 @@ var yeoman = require('yeoman-generator');
 var fs = require('fs');
 var chalk = require('chalk');
 
-var ComponentGenerator = yeoman.generators.NamedBase.extend({
+var PageGenerator = yeoman.generators.NamedBase.extend({
 
 	init: function () {
-		console.log('Creating component \'' + this.name + '\'');
+		console.log('Creating page \'' + this.name + '\'');
 		this.componentName = this.name;
-		this.dirname = 'src/components/' + this._.dasherize(this.name) + '/';
+		this.dirname = 'src/pages/';
 		this.filename = this._.dasherize(this.name);
 		this.viewModelClassName = this._.classify(this.name);
 	},
@@ -20,7 +20,7 @@ var ComponentGenerator = yeoman.generators.NamedBase.extend({
 	},
 
 	addComponentRegistration: function() {
-		var startupFile = 'src/app/startup' + this.codeFileExtension;
+		var startupFile = 'src/app/startup.js';
 		readIfFileExists.call(this, startupFile, function(existingContents) {
 			var existingRegistrationRegex = new RegExp('\\bko\\.components\\.register\\(\s*[\'"]' + this.filename + '[\'"]');
 			if (existingRegistrationRegex.exec(existingContents)) {
@@ -28,9 +28,9 @@ var ComponentGenerator = yeoman.generators.NamedBase.extend({
 				return;
 			}
 
-			var token = '// [Scaffolded component registrations will be inserted here. To retain this feature, don\'t remove this comment.]',
+			var token = '// [Scaffolded page registrations will be inserted here. To retain this feature, don\'t remove this comment.]',
 				regex = new RegExp('^(\\s*)(' + token.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&') + ')', 'm'),
-				modulePath = 'components/' + this.filename + '/' + this.filename,
+				modulePath = 'pages/' + this.filename + '/' + this.filename,
 				lineToAdd = 'ko.components.register(\'' + this.filename + '\', { require: \'' + modulePath + '\' });',
 				newContents = existingContents.replace(regex, '$1' + lineToAdd + '\n$&');
 			fs.writeFile(startupFile, newContents);
@@ -50,4 +50,4 @@ function readIfFileExists(path, callback) {
 	}
 }
 
-module.exports = ComponentGenerator;
+module.exports = PageGenerator;
