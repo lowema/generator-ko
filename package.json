@@ -1,36 +1,40 @@
 {
-  "name": "generator-skyko",
-  "version": "0.3.1",
-  "description": "Yeoman generator (with Sky bits). An extension to the work of Steve Sandserson, god of Knockout.",
-  "license": "MIT",
-  "main": "app/index.js",
-  "repository": "lowema/generator-ko",
-  "author": {
-    "name": "Mark Lowe",
-    "email": "mark.lowe@bskyb.com",
-    "url": "https://github.com/lowema"
-  },
-  "engines": {
-    "node": ">=0.10.0"
-  },
-  "scripts": {
-    "test": "mocha"
-  },
-  "files": [
-    "app",
-    "component"
-  ],
-  "keywords": [
-    "yeoman-generator"
-  ],
-  "dependencies": {
-    "yeoman-generator": "~0.16.0",
-    "chalk": "~0.4.0"
-  },
-  "devDependencies": {
-    "mocha": "*"
-  },
-  "peerDependencies": {
-    "yo": ">=1.0.0"
-  }
+	"name": "generator-skyko",
+	"version": "0.3.3",
+	"description": "Yeoman generator (with Sky bits). An extension to the work of Steve Sandserson, god of Knockout.",
+	"license": "MIT",
+	"main": "app/index.js",
+	"repository" :
+	{
+		"type" : "git",
+		"url" : "https://github.com/lowema/generator-ko.git"
+	},
+  	"author": {
+		"name": "Mark Lowe",
+		"email": "mark.lowe@bskyb.com",
+		"url": "https://github.com/lowema"
+	},
+	"engines": {
+		"node": ">=0.10.0"
+	},
+	"scripts": {
+		"test": "mocha"
+	},
+	"files": [
+		"app",
+		"component"
+	],
+	"keywords": [
+		"yeoman-generator"
+	],
+	"dependencies": {
+		"yeoman-generator": "~0.16.0",
+		"chalk": "~0.4.0"
+	},
+	"devDependencies": {
+		"mocha": "*"
+	},
+	"peerDependencies": {
+		"yo": ">=1.0.0"
+	}
 }
