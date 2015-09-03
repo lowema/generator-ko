@@ -29,8 +29,13 @@ var ComponentGenerator = yeoman.generators.NamedBase.extend({
 
 	},
 
-	writing: function() {
+	configuring: function() {
+		this.log(chalk.cyan("Saving configuration..."));
 		this.config.save();
+
+	},
+
+	writing: function() {
 		this.log( "Writing to: " + this.destinationRoot() );
 
 		this.templateOptions = {

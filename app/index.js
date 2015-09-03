@@ -50,9 +50,14 @@ module.exports = yeoman.generators.Base.extend({
 		}.bind(this));
 	},
 
-	writing: function() {
+	configuring: function() {
+		this.log(chalk.cyan("Saving configuration..."));
 		this.config.save();
-		this.log( "Writing to: " + this.destinationRoot() );
+
+	},
+
+	writing: function() {
+		this.log(chalk.cyan("Writing to: " + this.destinationRoot() + " ..." ));
 
 		this.templateOptions = {
 			longName: this.longName,
@@ -105,6 +110,7 @@ module.exports = yeoman.generators.Base.extend({
 	},
 
 	install: function() {
+		this.log(chalk.cyan("Installing dependencies..."));
 		this.installDependencies();
 		if (this.includeTests) {
 			// Install test dependencies too

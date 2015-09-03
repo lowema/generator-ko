@@ -1,4 +1,4 @@
-define(["knockout", "text!./template.html"], function(ko, template) {
+define(["knockout", "text!./home.html"], function(ko, template) {
 
 	function viewModel(route) {
 		var self = this;

@@ -1,6 +1,6 @@
 {
 	"name": "generator-skyko",
-	"version": "0.3.4",
+	"version": "0.4.0",
 	"description": "Yeoman generator (with Sky bits). An extension to the work of Steve Sandserson, god of Knockout.",
 	"license": "MIT",
 	"main": "app/index.js",
