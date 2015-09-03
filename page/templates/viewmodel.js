@@ -1,9 +1,9 @@
-define(['knockout', 'text!./<%= filename %>.html'], function(ko, template) {
+define(['knockout', 'text!./<%= fileName %>.html'], function(ko, template) {
 
 	function <%= viewModelClassName %>(params) {
 		var self = this;
 
-		self.message = ko.observable('Hello from the <%= name %> page!');
+		self.message = ko.observable('Hello from the <%= pageName %> page!');
 
 		self.doSomething = function() {
 			console.log('You did something in the view.');
