@@ -139,7 +139,7 @@ module.exports = yeoman.generators.Base.extend({
 				'module_name': 'bootstrap',
 				'bower_css_directory': 'bower_modules/bootstrap/dist/css/bootstrap.min.css',
 				'bower_js_directory': 'bower_modules/bootstrap/dist/js/bootstrap.min',
-				"require_dependencies": '\"bootstrap\": {deps: [\"jquery\"] }'
+				'require_dependencies': '\"bootstrap\": {deps: [\"jquery\"] }'
 			},
 			'Semantic UI': {
 				'module_name': 'semantic-ui',
