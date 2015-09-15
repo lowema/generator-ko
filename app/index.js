@@ -65,17 +65,17 @@ module.exports = yeoman.generators.Base.extend({
 	writing: function() {
 		this.log(chalk.cyan("Writing to: " + this.destinationRoot() + " ..."));
 
-		console.log(this.uiFramework);
+		var usingBootstrap = this.uiFramework === "Bootstrap";
 
 		this.templateOptions = {
 			longName: this.longName,
 			desc: this.desc,
 			slugName: this.slugName,
 			includeTests: this.includeTests,
-			uiFrameworkName: (this.uiFramework === "Bootstrap") ? "bootstrap" : "semantic-ui",
-			uiCSSFrameworkPath: (this.uiFramework === "Bootstrap") ? "bower_modules/bootstrap/dist/css/bootstrap.min.css" : "bower_modules/semantic-ui/dist/semantic.min.css",
-			uiJSFrameworkPath: (this.uiFramework === "Bootstrap") ? "bower_modules/bootstrap/dist/js/bootstrap.min" : "bower_modules/semantic-ui/dist/semantic.min",
-			uiFrameworkDeps: (this.uiFramework === "Bootstrap") ? "\"bootstrap\": {deps: [\"jquery\"] }" : "\"semantic-ui\": {deps: [\"jquery\"] }"
+			uiFrameworkName: (usingBootstrap) ? "bootstrap" : "semantic-ui",
+			uiCSSFrameworkPath: (usingBootstrap) ? "bower_modules/bootstrap/dist/css/bootstrap.min.css" : "bower_modules/semantic-ui/dist/semantic.min.css",
+			uiJSFrameworkPath: (usingBootstrap) ? "bower_modules/bootstrap/dist/js/bootstrap.min" : "bower_modules/semantic-ui/dist/semantic.min",
+			uiFrameworkDeps: (usingBootstrap) ? "\"bootstrap\": {deps: [\"jquery\"] }" : "\"semantic-ui\": {deps: [\"jquery\"] }"
 		};
 
 		this.fs.copyTpl(
