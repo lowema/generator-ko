@@ -65,17 +65,17 @@ module.exports = yeoman.generators.Base.extend({
 	writing: function() {
 		this.log(chalk.cyan("Writing to: " + this.destinationRoot() + " ..."));
 
-		var usingBootstrap = this.uiFramework === "Bootstrap";
+		var uiFramework = this._processUIFramework(this.uiFramework);
 
 		this.templateOptions = {
 			longName: this.longName,
 			desc: this.desc,
 			slugName: this.slugName,
 			includeTests: this.includeTests,
-			uiFrameworkName: (usingBootstrap) ? "bootstrap" : "semantic-ui",
-			uiCSSFrameworkPath: (usingBootstrap) ? "bower_modules/bootstrap/dist/css/bootstrap.min.css" : "bower_modules/semantic-ui/dist/semantic.min.css",
-			uiJSFrameworkPath: (usingBootstrap) ? "bower_modules/bootstrap/dist/js/bootstrap.min" : "bower_modules/semantic-ui/dist/semantic.min",
-			uiFrameworkDeps: (usingBootstrap) ? "\"bootstrap\": {deps: [\"jquery\"] }" : "\"semantic-ui\": {deps: [\"jquery\"] }"
+			uiFrameworkName: uiFramework.module_name,
+			uiCSSFrameworkPath: uiFramework.bower_css_directory,
+			uiJSFrameworkPath: uiFramework.bower_js_directory,
+			uiFrameworkDeps: uiFramework.require_dependencies
 		};
 
 		this.fs.copyTpl(
@@ -131,6 +131,24 @@ module.exports = yeoman.generators.Base.extend({
 				cwd: 'test'
 			});
 		}
+	},
+
+	_processUIFramework: function(uiFramework) {
+		var uiFrameworks =
+			{'Bootstrap': {
+				'module_name': 'bootstrap',
+				'bower_css_directory': 'bower_modules/bootstrap/dist/css/bootstrap.min.css',
+				'bower_js_directory': 'bower_modules/bootstrap/dist/js/bootstrap.min',
+				"require_dependencies": '\"bootstrap\": {deps: [\"jquery\"] }'
+			},
+			'Semantic UI': {
+				'module_name': 'semantic-ui',
+				'bower_css_directory': 'bower_modules/semantic-ui/dist/semantic.min.css',
+				'bower_js_directory': 'bower_modules/semantic-ui/dist/semantic.min',
+				'require_dependencies': '\"semantic-ui\": {deps: [\"jquery\"] }'
+			}
+		};
+		return (uiFramework in uiFrameworks) ? uiFrameworks[uiFramework] : uiFrameworks["Bootstrap"];
 	},
 
 	_processDirectory: function(sourceDir) {
