@@ -13,6 +13,9 @@ var clean = require('gulp-clean');
 var replace = require('gulp-replace');
 var uglify = require('gulp-uglify');
 var htmlreplace = require('gulp-html-replace');
+<%if(includeBrowserSync) { %>
+var browserSync = require('browser-sync');
+<% } %>
 
 // Config
 var requireJsRuntimeConfig = vm.runInNewContext(fs.readFileSync('src/app/require.config.js') + '; require;');
@@ -89,3 +92,15 @@ gulp.task('default', ['html', 'js', 'css', 'images', 'themes'], function(callbac
     callback();
     console.log('\nPlaced optimized files in ' + chalk.magenta('dist/\n'));
 });
+
+<%if(includeBrowserSync) { %>
+gulp.task('serve', function() {
+    browserSync.init({
+        server: {
+            baseDir: "./src"
+        }
+    });
+
+	gulp.watch("src/**/**").on('change', browserSync.reload);
+});
+<% } %>

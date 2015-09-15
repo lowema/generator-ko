@@ -25,19 +25,24 @@ module.exports = yeoman.generators.Base.extend({
 
 		var prompts = [{
 			name: 'name',
-			message: 'What\'s the name of your new application ?',
+			message: 'What\'s the name of your new application?',
 			default: this.appname
 		}, {
 			name: 'desc',
-			message: 'What\'s the description of your new application ?',
+			message: 'What\'s the description of your new application?',
 			default: 'some application called ' + this.appname
 		}, {
-			type: "list",
-			name: "uiFramework",
-			message: "What UI Framework do you want to use?",
+			type: 'confirm',
+			name: 'includeBrowserSync',
+			message: 'Would you like to include BrowserSync? (Requires Visual Studio 2013)',
+			default: false
+		}, {
+			type: 'list',
+			name: 'uiFramework',
+			message: 'What UI Framework do you want to use?',
 			choices: [
-				"Bootstrap",
-				"Semantic UI"
+				'Bootstrap',
+				'Semantic UI'
 			]
 		}, {
 			type: 'confirm',
@@ -51,6 +56,7 @@ module.exports = yeoman.generators.Base.extend({
 			this.slugName = slug(this.longName);
 			this.desc = props.desc;
 			this.uiFramework = props.uiFramework;
+			this.includeBrowserSync = props.includeBrowserSync;
 			this.includeTests = props.includeTests;
 			done();
 		}.bind(this));
@@ -59,7 +65,6 @@ module.exports = yeoman.generators.Base.extend({
 	configuring: function() {
 		this.log(chalk.cyan("Saving configuration..."));
 		this.config.save();
-
 	},
 
 	writing: function() {
@@ -75,7 +80,8 @@ module.exports = yeoman.generators.Base.extend({
 			uiFrameworkName: uiFramework.module_name,
 			uiCSSFrameworkPath: uiFramework.bower_css_directory,
 			uiJSFrameworkPath: uiFramework.bower_js_directory,
-			uiFrameworkDeps: uiFramework.require_dependencies
+			uiFrameworkDeps: uiFramework.require_dependencies,
+			includeBrowserSync: this.includeBrowserSync
 		};
 
 		this.fs.copyTpl(

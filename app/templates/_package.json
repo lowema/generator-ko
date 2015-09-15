@@ -11,7 +11,7 @@
 		"gulp-replace": "~0.2.0",
 		"gulp-uglify": "~0.2.1",
 		"gulp-html-replace": "~1.0.0",
-
+		<%-includeBrowserSync ? "\"browser-sync\": \"latest\"," : "" %>
 	<% if(includeTests) { %>
 		"karma": "^0.12.15",
 		"karma-chrome-launcher": "^0.1.3",
