@@ -13,8 +13,8 @@ module.exports = yeoman.generators.Base.extend({
 		this.log(chalk.cyan("   /___/_/\\_\\\\_, /_/|_|\\____/ "));
 		this.log(chalk.cyan("            /___/             "));
 		this.log(chalk.yellow(" +----------------------------+"));
-		this.log(chalk.yellow(" |") + chalk.green (" You're using the fantastic ") + chalk.yellow("|"));
-		this.log(chalk.yellow(" |") + chalk.green (" Sky Knockout app generator.") + chalk.yellow("|"));
+		this.log(chalk.yellow(" |") + chalk.green(" You're using the fantastic ") + chalk.yellow("|"));
+		this.log(chalk.yellow(" |") + chalk.green(" Sky Knockout app generator.") + chalk.yellow("|"));
 		this.log(chalk.yellow(" +----------------------------+"));
 		this.log(chalk.red("CREATING APPLICATION..."));
 		this.log(" ");
@@ -23,28 +23,34 @@ module.exports = yeoman.generators.Base.extend({
 	prompting: function() {
 		var done = this.async();
 
-		var prompts = [
-			{
-				name: 'name',
-				message: 'What\'s the name of your new application ?',
-				default: this.appname
-			},
-			{
-				name: 'desc',
-				message: 'What\'s the description of your new application ?',
-				default: 'some application called ' + this.appname
-			},
-			{
-				type: 'confirm',
-				name: 'includeTests',
-				message: 'Do you want to include automated tests, using Jasmine and Karma ?',
-				default: true
-			}];
+		var prompts = [{
+			name: 'name',
+			message: 'What\'s the name of your new application ?',
+			default: this.appname
+		}, {
+			name: 'desc',
+			message: 'What\'s the description of your new application ?',
+			default: 'some application called ' + this.appname
+		}, {
+			type: "list",
+			name: "uiFramework",
+			message: "What UI Framework do you want to use?",
+			choices: [
+				"Bootstrap",
+				"Semantic UI"
+			]
+		}, {
+			type: 'confirm',
+			name: 'includeTests',
+			message: 'Do you want to include automated tests, using Jasmine and Karma ?',
+			default: true
+		}];
 
-		this.prompt(prompts, function (props) {
+		this.prompt(prompts, function(props) {
 			this.longName = props.name;
 			this.slugName = slug(this.longName);
 			this.desc = props.desc;
+			this.uiFramework = props.uiFramework;
 			this.includeTests = props.includeTests;
 			done();
 		}.bind(this));
@@ -57,13 +63,19 @@ module.exports = yeoman.generators.Base.extend({
 	},
 
 	writing: function() {
-		this.log(chalk.cyan("Writing to: " + this.destinationRoot() + " ..." ));
+		this.log(chalk.cyan("Writing to: " + this.destinationRoot() + " ..."));
+
+		console.log(this.uiFramework);
 
 		this.templateOptions = {
 			longName: this.longName,
 			desc: this.desc,
 			slugName: this.slugName,
-			includeTests: this.includeTests
+			includeTests: this.includeTests,
+			uiFrameworkName: (this.uiFramework === "Bootstrap") ? "bootstrap" : "semantic-ui",
+			uiCSSFrameworkPath: (this.uiFramework === "Bootstrap") ? "bower_modules/bootstrap/dist/css/bootstrap.min.css" : "bower_modules/semantic-ui/dist/semantic.min.css",
+			uiJSFrameworkPath: (this.uiFramework === "Bootstrap") ? "bower_modules/bootstrap/dist/js/bootstrap.min" : "bower_modules/semantic-ui/dist/semantic.min",
+			uiFrameworkDeps: (this.uiFramework === "Bootstrap") ? "\"bootstrap\": {deps: [\"jquery\"] }" : "\"semantic-ui\": {deps: [\"jquery\"] }"
 		};
 
 		this.fs.copyTpl(
@@ -96,7 +108,7 @@ module.exports = yeoman.generators.Base.extend({
 		)
 
 		this._processDirectory('src/');
-		if( this.includeTests ) {
+		if (this.includeTests) {
 			this._processDirectory('test/');
 			this.fs.copy(
 				this.templatePath('bowerrc_test'),
@@ -115,17 +127,23 @@ module.exports = yeoman.generators.Base.extend({
 		if (this.includeTests) {
 			// Install test dependencies too
 			var bowerArgs = ['install'];
-			this.spawnCommand('bower', bowerArgs, { cwd: 'test' });
+			this.spawnCommand('bower', bowerArgs, {
+				cwd: 'test'
+			});
 		}
 	},
 
 	_processDirectory: function(sourceDir) {
-		var files = glob.sync('**', { dot: true, cwd: this.templatePath(sourceDir), nodir: true });
+		var files = glob.sync('**', {
+			dot: true,
+			cwd: this.templatePath(sourceDir),
+			nodir: true
+		});
 		for (var i = 0; i < files.length; i++) {
 			var f = sourceDir + files[i];
 			var src = this.templatePath(f);
 			var dest = this.destinationPath(path.join(path.dirname(f), path.basename(f).replace(/^_/, '')));
-			if(path.basename(f).indexOf('_') == 0) {
+			if (path.basename(f).indexOf('_') == 0) {
 				this.fs.copyTpl(
 					src,
 					dest,
@@ -139,5 +157,4 @@ module.exports = yeoman.generators.Base.extend({
 			}
 		}
 	}
-
 });
